@@ -1,4 +1,4 @@
-import * as Http from "http";
+nodeimport * as Http from "http";
 import * as Url from "url";
 
 namespace Server {
@@ -16,7 +16,7 @@ namespace Server {
     server.listen(port);
 
     function handleListen(): void {
-        console.log("Ich hÃ¶re?");
+        console.log("Ich höre?");
     }
 
     function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
@@ -26,8 +26,8 @@ namespace Server {
         let a: number = parseInt(query["a"]);
         let b: number = parseInt(query["b"]);
 
-        for (let key in query) 
-            console.log(query[key]);
+        for (let key in query)
+        {_response.write("Quer-Infos " + (query[key]) + "<br>");}
 
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
