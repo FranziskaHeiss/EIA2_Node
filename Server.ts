@@ -20,19 +20,18 @@ namespace Server {
     }
 
     function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
-        console.log("Ich hÃ¶re Stimmen!");
+        console.log("Ich höre Stimmen!");
 
         let query: AssocStringString = Url.parse(_request.url, true).query;
         let a: number = parseInt(query["a"]);
-        let b: number = parseInt(query["b"]);
-
-        for (let key in query)
-        {_response.write("Quer-Infos " + (query[key]) + "<br>");}
+        let b: number = parseInt(query["b"]);   
 
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
-        _response.write("Ich habe dich gehÃ¶rt<br/>");
+        _response.write("Ich habe dich gehört<br/>");
+        for (let key in query)
+        _response.write("Query-Infos " + (query[key]) + "</br>");
         _response.write("Das Ergebnis ist: " + (a + b));
 
         _response.end();
