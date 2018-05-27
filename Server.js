@@ -7,22 +7,21 @@
 "use strict";
 const Http = require("http");
 const Url = require("url");
-// IMPORT HAT BEI MIR NICHT FUNKTIONIERT
 var Server;
 (function (Server) {
-    // Homogenes assoziatives Array zur Speicherung einer Person unter der Matrikelnummer
+    // Homogenes assoziatives Array in dem die einzelnen Studenten mit ihrer Matrikelnummer gspeichert werden
     let studiHomoAssoc = {};
     let port = process.env.PORT;
     if (port == undefined)
-        port = 8200;
+        port = 8100;
     let server = Http.createServer((_request, _response) => {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
     });
     server.addListener("request", handleRequest);
     server.listen(port);
+    //Switch Abfrage mit den verschiednene F�llen und den entsprechenden Funktionen, die ausgef�hrt werden sollen      
     function handleRequest(_request, _response) {
-        console.log("Ich h�re Stimmen!");
         let query = Url.parse(_request.url, true).query;
         console.log(query["command"]);
         if (query["command"]) {
@@ -42,6 +41,7 @@ var Server;
         }
         _response.end();
     }
+    //Daten des Studi werden als Objekte �bergeben      
     function insert(query, _response) {
         let obj = JSON.parse(query["data"]);
         let _firstname = obj.firstname;
@@ -60,10 +60,10 @@ var Server;
             gender: _gender
         };
         studiHomoAssoc[matrikel] = studi;
-        _response.write("Daten empfangen");
+        _response.write("Daten wurden gespeichert"); //R�ckmeldung f�r den User
     }
     function refresh(_response) {
-        console.log(studiHomoAssoc);
+        //console.log(studiHomoAssoc);
         for (let matrikel in studiHomoAssoc) {
             let studi = studiHomoAssoc[matrikel];
             let line = matrikel + ": ";
@@ -81,7 +81,7 @@ var Server;
             _response.write(line);
         }
         else {
-            _response.write("No Match");
+            _response.write("No match found");
         }
     }
     function error() {
