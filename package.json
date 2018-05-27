@@ -1,7 +1,7 @@
 {
-	"name" : "Servertest",
+	"name" : "EIA2",
 	"version" : "1.0.0",
-	"description" : "First Server Test",
+	"description" : "First Server",
 	"author" : "Franzi",
 	"main" : "Server.js",
 	"scripts" : {

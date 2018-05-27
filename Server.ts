@@ -1,39 +1,123 @@
+/*  Aufgabe: Aufgabe 6: ClientServer - StudiVZ
+    Name: Franziska Heiﬂ
+    Matrikel: 257745
+    Datum: 27.05.18
+    
+    Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.*/ 
+    
+
 import * as Http from "http";
 import * as Url from "url";
 
+// IMPORT HAT BEI MIR NICHT FUNKTIONIERT
 namespace Server {
+
     interface AssocStringString {
         [key: string]: string;
     }
 
+    interface Studi {
+        firstname: string;
+        name: string;
+        studyPath: string;
+        matrikel: number;
+        age: number;
+        gender: boolean;       
+    }
+
+    // Struktur des homogenen assoziativen Arrays, bei dem ein Datensatz der Matrikelnummer zugeordnet ist
+    interface Studis {
+        [matrikel: string]: Studi;
+    }
+    
+
+    // Homogenes assoziatives Array zur Speicherung einer Person unter der Matrikelnummer
+    let studiHomoAssoc: Studis = {};
     let port: number = process.env.PORT;
     if (port == undefined)
-        port = 8100;
+        port = 8200;
 
-    let server: Http.Server = Http.createServer();
-    server.addListener("listening", handleListen);
+    let server: Http.Server = Http.createServer((_request: Http.IncomingMessage, _response: Http.ServerResponse) => {
+        _response.setHeader("content-type", "text/html; charset=utf-8");
+        _response.setHeader("Access-Control-Allow-Origin", "*");
+    });
     server.addListener("request", handleRequest);
     server.listen(port);
 
-    function handleListen(): void {
-        console.log("Ich h√∂re?");
-    }
-
     function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
-        console.log("Ich h√∂re Stimmen!");
-
+        console.log("Ich hˆre Stimmen!");
         let query: AssocStringString = Url.parse(_request.url, true).query;
-        let a: number = parseInt(query["a"]);
-        let b: number = parseInt(query["b"]);
+        console.log(query["command"]);
+        if (query["command"] ) {
+            switch (query["command"] ) {
+                case "insert": 
+                    insert(query, _response);
+                    break;
+                 
+                case "refresh":
+                    refresh(_response);
+                    break;
+                    
+                case "search":
+                    search(query, _response);
+                    break;
+               
+                default: 
+                    error();
+            } 
+        }
+        _response.end();    
+        
+    }      
+        
+        function insert(query: AssocStringString, _response: Http.ServerResponse): void {
+            let obj: Studi = JSON.parse(query["data"]);
+            let _firstname: string = obj.firstname;
+            let _name: string = obj.name;  
+            let _studyPath: string = obj.studyPath;  
+            let matrikel: string = obj.matrikel.toString(); 
+            let _age: number = obj.age;
+            let _gender: boolean = obj.gender;            
+            let studi: Studi;
+            studi = {
+                firstname: _firstname,
+                name: _name,
+                studyPath: _studyPath,
+                matrikel: parseInt(matrikel),
+                age: _age,
+                gender: _gender            
+            };  
+            studiHomoAssoc[matrikel] = studi;
+            _response.write("Daten empfangen");
+            }
+
+        function refresh(_response: Http.ServerResponse): void {
+            console.log(studiHomoAssoc);
+            for (let matrikel in studiHomoAssoc) {  
+            let studi: Studi = studiHomoAssoc[matrikel];
+            let line: string = matrikel + ": ";
+            line += studi.studyPath + ", " + studi.name + ", " + studi.firstname + ", " + studi.age + " Jahre ";
+            line += studi.gender ? "(M)" : "(F)"; 
+            _response.write(line + "\n");                                          
+            }
+        } 
+        
+        function search(query: AssocStringString, _response: Http.ServerResponse): void {
+            let studi: Studi = studiHomoAssoc[query["searchFor"]];
+            if (studi) {
+                let line: string = query["searchFor"] + ": ";
+                line += studi.studyPath + ", " + studi.name + ", " + studi.firstname + ", " + studi.age + " Jahre ";
+                line += studi.gender ? "(M)" : "(F)";
+                _response.write(line);
+            } else {
+                _response.write("No Match");    
+            }    
+        }
+        
+        function error(): void {
+            alert("Error"); 
+        }
+
+        
     
-        _response.setHeader("content-type", "text/html; charset=utf-8");
-        _response.setHeader("Access-Control-Allow-Origin", "*");
-
-        _response.write("Ich habe dich geh√∂rt<br/>");             
-        for (let key in query) 
-        _response.write("Query-Informationen: " + (query[key]) + "</br>");
-        _response.write("Das Ergebnis ist: " + (a + b));
-
-        _response.end();
-    }
 }
