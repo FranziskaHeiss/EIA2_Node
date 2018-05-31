@@ -18,11 +18,11 @@ namespace Server {
     // Interface lässt sich warum auch immer hier nicht einbinden, darum hier nochmal deklariert 
     interface Studi {
         firstname: string;
-        name: string;
-        studyPath: string;
+        name: string;       
         matrikel: number;
         age: number;
-        gender: boolean;       
+        gender: boolean; 
+        studyPath: string;      
     }
 
     // Homogenes assoziatives Array, in dem der Matrikelnummer die Daten aus dem Interface Studi zugeodrnet werden
@@ -74,19 +74,19 @@ namespace Server {
     function insert(query: AssocStringString, _response: Http.ServerResponse): void {
         let obj: Studi = JSON.parse(query["data"]);
         let _firstname: string = obj.firstname;
-        let _name: string = obj.name;  
-        let _studyPath: string = obj.studyPath;  
+        let _name: string = obj.name;          
         let matrikel: string = obj.matrikel.toString(); 
         let _age: number = obj.age;
-        let _gender: boolean = obj.gender;            
+        let _gender: boolean = obj.gender; 
+        let _studyPath: string = obj.studyPath;            
         let studi: Studi;
             studi = {
                 firstname: _firstname,
-                name: _name,
-                studyPath: _studyPath,
+                name: _name,              
                 matrikel: parseInt(matrikel),
                 age: _age,
-                gender: _gender            
+                gender: _gender,
+                studyPath: _studyPath         
             };  
         studiHomoAssoc[matrikel] = studi;
         _response.write("Daten wurden gespeichert"); //Rückmeldung für den User

@@ -46,18 +46,18 @@ var Server;
         let obj = JSON.parse(query["data"]);
         let _firstname = obj.firstname;
         let _name = obj.name;
-        let _studyPath = obj.studyPath;
         let matrikel = obj.matrikel.toString();
         let _age = obj.age;
         let _gender = obj.gender;
+        let _studyPath = obj.studyPath;
         let studi;
         studi = {
             firstname: _firstname,
             name: _name,
-            studyPath: _studyPath,
             matrikel: parseInt(matrikel),
             age: _age,
-            gender: _gender
+            gender: _gender,
+            studyPath: _studyPath
         };
         studiHomoAssoc[matrikel] = studi;
         _response.write("Daten wurden gespeichert"); //R�ckmeldung f�r den User
