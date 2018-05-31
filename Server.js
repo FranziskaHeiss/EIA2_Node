@@ -14,12 +14,21 @@ var Server;
     let port = process.env.PORT;
     if (port == undefined)
         port = 8100;
-    let server = Http.createServer((_request, _response) => {
+    let server = Http.createServer();
+    server.addListener("listening", handleListen);
+    server.addListener("request", handleRequest);
+    server.listen(port);
+    function handleListen(_request, _response) {
+        _response.setHeader("content-type", "text/html; charset=utf-8");
+        _response.setHeader("Access-Control-Allow-Origin", "*");
+    }
+    /*let server: Http.Server = Http.createServer((_request: Http.IncomingMessage, _response: Http.ServerResponse) => {
+        //=> Arrow function (Kurzschreibweise f�r eine Funktion)
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
     });
     server.addListener("request", handleRequest);
-    server.listen(port);
+    server.listen(port);*/
     //Switch Abfrage mit den verschiednene F�llen und den entsprechenden Funktionen, die ausgef�hrt werden sollen      
     function handleRequest(_request, _response) {
         let query = Url.parse(_request.url, true).query;

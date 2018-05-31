@@ -36,16 +36,27 @@ namespace Server {
     let port: number = process.env.PORT;
     if (port == undefined)
         port = 8100;
+    
+    let server: Http.Server = Http.createServer();
+    server.addListener("listening", handleListen);
+    server.addListener("request", handleRequest);
+    server.listen(port);
 
-    let server: Http.Server = Http.createServer((_request: Http.IncomingMessage, _response: Http.ServerResponse) => {
+    function handleListen(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
+        _response.setHeader("content-type", "text/html; charset=utf-8");
+        _response.setHeader("Access-Control-Allow-Origin", "*");
+    }
+    
+    /*let server: Http.Server = Http.createServer((_request: Http.IncomingMessage, _response: Http.ServerResponse) => {
+        //=> Arrow function (Kurzschreibweise für eine Funktion)  
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
     });
     server.addListener("request", handleRequest);
-    server.listen(port);
+    server.listen(port);*/
 
     //Switch Abfrage mit den verschiednene Fällen und den entsprechenden Funktionen, die ausgeführt werden sollen      
-    function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {       
+    function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): void {        
         let query: AssocStringString = Url.parse(_request.url, true).query;
         console.log(query["command"]);
         if (query["command"] ) {
