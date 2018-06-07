@@ -1,8 +1,8 @@
 "use strict";
 /**
- * Simple database insertion and query for MongoDB
- * @author: Jirka Dell'Oro-Friedl
- */
+* Simple database insertion and query for MongoDB
+* @author: Jirka Dell'Oro-Friedl
+*/
 const Mongo = require("mongodb");
 console.log("Database starting");
 let databaseURL = "mongodb://localhost:27017";
@@ -12,8 +12,8 @@ let students;
 // wenn wir auf heroku sind...
 if (process.env.NODE_ENV == "production") {
     //    databaseURL = "mongodb://username:password@hostname:port/database";
-    databaseURL = "mongodb://testuser:testpassword@ds129532.mlab.com:29532/eia2";
-    databaseName = "eia2";
+    databaseURL = "mongodb://testuser:testpassword1@ds245170.mlab.com:45170/database-mongodb";
+    databaseName = "database-mongodb";
 }
 // handleConnect wird aufgerufen wenn der Versuch, die Connection zur Datenbank herzustellen, erfolgte
 Mongo.MongoClient.connect(databaseURL, handleConnect);

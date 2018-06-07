@@ -5,34 +5,11 @@
     
     Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.*/ 
     
-
+import * as Database from "./Database";
 import * as Http from "http";
 import * as Url from "url";
 
-namespace Server {
-
-    interface AssocStringString {
-        [key: string]: string;
-    }
-
-    // Interface lässt sich warum auch immer hier nicht einbinden, darum hier nochmal deklariert 
-    interface Studi {
-        firstname: string;
-        name: string;       
-        matrikel: number;
-        age: number;
-        gender: boolean; 
-        studyPath: string;      
-    }
-
-    // Homogenes assoziatives Array, in dem der Matrikelnummer die Daten aus dem Interface Studi zugeodrnet werden
-    interface Studis {
-        [matrikel: string]: Studi;
-    }
-    
-    // Homogenes assoziatives Array in dem die einzelnen Studenten mit ihrer Matrikelnummer gspeichert werden
-    let studiHomoAssoc: Studis = {};
-    
+   
     let port: number = process.env.PORT;
     if (port == undefined)
         port = 8100;
@@ -99,7 +76,7 @@ namespace Server {
                 gender: _gender,
                 studyPath: _studyPath         
             };  
-        studiHomoAssoc[matrikel] = studi;
+        Database.insert(studi);
         _response.write("Daten wurden gespeichert"); //Rückmeldung für den User
     }
    
@@ -130,4 +107,3 @@ namespace Server {
             alert("Error"); 
     }        
     
-}
