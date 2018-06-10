@@ -34,7 +34,7 @@ function handleRequest(_request, _response) {
                 error();
         }
     }
-    //_response.end();
+    _response.end();
 }
 //Daten des Studi werden als Objekte �bergeben      
 function insert(query, _response) {
