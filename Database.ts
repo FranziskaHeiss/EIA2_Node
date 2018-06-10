@@ -1,8 +1,11 @@
+/*  Aufgabe: Aufgabe 8: ClientServer - StudiVZ
+    Name: Franziska Heiﬂ
+    Matrikel: 257745
+    Datum: 10.06.18
+    
+    Hiermit versichere ich, dass ich diesen Code selbst geschrieben habe. Er wurde nicht kopiert und auch nicht diktiert.
+    Dieser Code wurde zusammen mit Alena Hurst, Sofia Gschwend, Sabrina Kerl, Anna Lotz und Tim Lieberherr erarbeitet*/ 
 
- /**
- * Simple database insertion and query for MongoDB
- * @author: Jirka Dell'Oro-Friedl
- */
 import * as Mongo from "mongodb";
 console.log("Database starting");
 
