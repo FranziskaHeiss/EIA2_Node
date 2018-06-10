@@ -56,7 +56,7 @@ export function findAll(_callback: Function): void {
         } else {
             let line: string = "";
             for (let i: number = 0; i < studentArray.length; i++) {
-                line += studentArray[i].matrikel + ": " + studentArray[i].studyPath + ", " + studentArray[i].firstname + ", " + studentArray[i].name + ", " + studentArray[i].age + ", ";
+                line += studentArray[i].matrikel + ": " + studentArray[i].name + ", " + studentArray[i].firstname + ", " + studentArray[i].studyPath + ", " + studentArray[i].age + ", ";
                 line += studentArray[i].gender ? "(M)" : "(F)";
                 line += "\n";
             }
@@ -75,11 +75,11 @@ export function findStudent(searchedMatrikel: number, _callback: Function): void
         }
 
         if (studi) {
-            let line: string = studi.matrikel + ": " + studi.studyPath + ", " + studi.firstname + ", " + studi.name + ", " + studi.age + ", ";
+            let line: string = studi.matrikel + ": " + studi.name + ", " + studi.firstname + ", " + studi.studyPath + ", " + studi.age + ", ";
             line += studi.gender ? "(M)" : "(F)";
             _callback(line);
         } else {
-            _callback("No Match");
+            _callback("No Match found");
         }
     }
 }

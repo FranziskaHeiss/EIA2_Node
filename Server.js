@@ -15,6 +15,12 @@ if (port == undefined)
 let server = Http.createServer();
 server.addListener("request", handleRequest);
 server.listen(port);
+function handleResponse(_response, _text) {
+    _response.setHeader("content-type", "text/html; charset=utf-8");
+    _response.setHeader("Access-Control-Allow-Origin", "*");
+    _response.write(_text);
+    _response.end();
+}
 //Switch Abfrage mit den verschiednene F�llen und den entsprechenden Funktionen, die ausgef�hrt werden sollen      
 function handleRequest(_request, _response) {
     let query = Url.parse(_request.url, true).query;
@@ -70,11 +76,5 @@ function search(query, _response) {
 }
 function error() {
     alert("Error");
-}
-function handleResponse(_response, _text) {
-    _response.setHeader("content-type", "text/html; charset=utf-8");
-    _response.setHeader("Access-Control-Allow-Origin", "*");
-    _response.write(_text);
-    _response.end();
 }
 //# sourceMappingURL=Server.js.map
