@@ -42,7 +42,7 @@ function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerRes
                 error();
         }
     }
-    _response.end();
+    //_response.end();
 }
 
 //Daten des Studi werden als Objekte übergeben      
