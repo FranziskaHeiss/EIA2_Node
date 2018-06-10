@@ -15,12 +15,6 @@ if (port == undefined)
 let server = Http.createServer();
 server.addListener("request", handleRequest);
 server.listen(port);
-function handleResponse(_response, _text) {
-    _response.setHeader("content-type", "text/html; charset=utf-8");
-    _response.setHeader("Access-Control-Allow-Origin", "*");
-    _response.write(_text);
-    _response.end();
-}
 //Switch Abfrage mit den verschiednene F�llen und den entsprechenden Funktionen, die ausgef�hrt werden sollen      
 function handleRequest(_request, _response) {
     let query = Url.parse(_request.url, true).query;
@@ -40,7 +34,7 @@ function handleRequest(_request, _response) {
                 error();
         }
     }
-    _response.end();
+    //_response.end();
 }
 //Daten des Studi werden als Objekte �bergeben      
 function insert(query, _response) {
@@ -69,18 +63,18 @@ function refresh(_response) {
     });
 }
 function search(query, _response) {
-    let studi = studiHomoAssoc[query["searchFor"]];
-    if (studi) {
-        let line = query["searchFor"] + ": ";
-        line += studi.studyPath + ", " + studi.name + ", " + studi.firstname + ", " + studi.age + " Jahre ";
-        line += studi.gender ? "(M)" : "(F)";
-        _response.write(line);
-    }
-    else {
-        _response.write("No match found");
-    }
+    let searchedMatrikel = parseInt(query["searchFor"]);
+    Database.findStudent(searchedMatrikel, function (json) {
+        handleResponse(_response, json);
+    });
 }
 function error() {
     alert("Error");
+}
+function handleResponse(_response, _text) {
+    _response.setHeader("content-type", "text/html; charset=utf-8");
+    _response.setHeader("Access-Control-Allow-Origin", "*");
+    _response.write(_text);
+    _response.end();
 }
 //# sourceMappingURL=Server.js.map

@@ -40,11 +40,37 @@ function findAll(_callback) {
     var cursor = students.find();
     cursor.toArray(prepareAnswer);
     function prepareAnswer(_e, studentArray) {
-        if (_e)
+        if (_e) {
             _callback("Error" + _e);
-        else
-            _callback(JSON.stringify(studentArray));
+        }
+        else {
+            let line = "";
+            for (let i = 0; i < studentArray.length; i++) {
+                line += studentArray[i].matrikel + ": " + studentArray[i].studyPath + ", " + studentArray[i].firstname + ", " + studentArray[i].name + ", " + studentArray[i].age + ", ";
+                line += studentArray[i].gender ? "(M)" : "(F)";
+                line += "\n";
+            }
+            _callback(line);
+        }
     }
 }
 exports.findAll = findAll;
+function findStudent(searchedMatrikel, _callback) {
+    var myCursor = students.find({ "matrikel": searchedMatrikel }).limit(1);
+    myCursor.next(prepareStudent);
+    function prepareStudent(_e, studi) {
+        if (_e) {
+            _callback("Error" + _e);
+        }
+        if (studi) {
+            let line = studi.matrikel + ": " + studi.studyPath + ", " + studi.firstname + ", " + studi.name + ", " + studi.age + ", ";
+            line += studi.gender ? "(M)" : "(F)";
+            _callback(line);
+        }
+        else {
+            _callback("No Match");
+        }
+    }
+}
+exports.findStudent = findStudent;
 //# sourceMappingURL=Database.js.map

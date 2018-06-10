@@ -51,9 +51,35 @@ export function findAll(_callback: Function): void {
     cursor.toArray(prepareAnswer);
 
     function prepareAnswer(_e: Mongo.MongoError, studentArray: Studi[]): void {
-        if (_e)
+        if (_e) {
             _callback("Error" + _e);
-        else
-            _callback(JSON.stringify(studentArray));
+        } else {
+            let line: string = "";
+            for (let i: number = 0; i < studentArray.length; i++) {
+                line += studentArray[i].matrikel + ": " + studentArray[i].studyPath + ", " + studentArray[i].firstname + ", " + studentArray[i].name + ", " + studentArray[i].age + ", ";
+                line += studentArray[i].gender ? "(M)" : "(F)";
+                line += "\n";
+            }
+            _callback(line);
+        } 
+    }
+}
+
+export function findStudent(searchedMatrikel: number, _callback: Function): void {
+    var myCursor: Mongo.Cursor = students.find({ "matrikel": searchedMatrikel }).limit(1);
+    myCursor.next(prepareStudent);
+
+    function prepareStudent(_e: Mongo.MongoError, studi: Studi): void {
+        if (_e) {
+            _callback("Error" + _e);
+        }
+
+        if (studi) {
+            let line: string = studi.matrikel + ": " + studi.studyPath + ", " + studi.firstname + ", " + studi.name + ", " + studi.age + ", ";
+            line += studi.gender ? "(M)" : "(F)";
+            _callback(line);
+        } else {
+            _callback("No Match");
+        }
     }
 }
