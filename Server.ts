@@ -47,7 +47,8 @@ import * as Database from "./Database";
                 default: 
                     error();
             } 
-         }           
+         }    
+        _response.end();       
      }      
         
     //Daten des Studi werden als Objekte übergeben      
